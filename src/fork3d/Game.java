@@ -20,7 +20,7 @@ public class Game extends Canvas implements Runnable {
 
     public static final int WIDTH = 160;
     public static final int HEIGHT = WIDTH / 12 * 9;
-    public static final int SCALE = 3;
+    public static final int SCALE = 5;
     public static final String NAME = "fork3d";
 
     private JFrame frame;
