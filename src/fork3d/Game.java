@@ -1,5 +1,6 @@
 package fork3d;
 
+import gfx.Screen;
 import gfx.SpriteSheet;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class Game extends Canvas implements Runnable {
 
     public static final int WIDTH = 160;
     public static final int HEIGHT = WIDTH / 12 * 9;
-    public static final int SCALE = 5;
+    public static final int SCALE = 3;
     public static final String NAME = "fork3d";
 
     private JFrame frame;
@@ -27,10 +28,10 @@ public class Game extends Canvas implements Runnable {
     public boolean running = false;
     public int tickCount = 0;
 
-    private BufferedImage image = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_INT_RGB);
-    private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+    private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+    private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-    private SpriteSheet spriteSheet = new SpriteSheet("res/spriteSheet.png");
+    private Screen screen;
 
     public Game() {
         setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -46,6 +47,10 @@ public class Game extends Canvas implements Runnable {
         frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public void init() {
+        screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/spriteSheet.png"));
     }
 
     private synchronized void start() {
@@ -66,6 +71,8 @@ public class Game extends Canvas implements Runnable {
 
         long lastTimer = System.currentTimeMillis();
         double delta = 0;
+
+        init();
 
         while (running) {
             long now = System.nanoTime();
@@ -107,23 +114,26 @@ public class Game extends Canvas implements Runnable {
     public void tick() {
         tickCount++;
 
-        for(int i = 0; i < pixels.length; i++){
+        for (int i = 0; i < pixels.length; i++) {
             pixels[i] = i + tickCount;
         }
     }
 
     public void render() {
         BufferStrategy bs = getBufferStrategy();
-        if (bs == null){
+        if (bs == null) {
             createBufferStrategy(3);
             return;
         }
+
+        screen.render(pixels, 0, WIDTH);
+
         Graphics g = bs.getDrawGraphics();
 
         g.setColor(Color.BLACK);
-        g.fillRect(0,0,getWidth(),getHeight());
+        g.fillRect(0, 0, getWidth(), getHeight());
 
-        g.drawImage(image, 0,0, getWidth(), getHeight(), null);
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
         bs.show();
     }
