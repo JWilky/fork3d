@@ -120,6 +120,14 @@ public class Game extends Canvas implements Runnable {
         if (input.down.isPressed()) screen.yOffset++ ;
         if (input.left.isPressed()) screen.xOffset-- ;
         if (input.right.isPressed()) screen.xOffset++ ;
+        if (input.up_right.isPressed()){
+            screen.xOffset++;
+            screen.yOffset--;
+        }
+        if (input.up_left.isPressed()){
+            screen.xOffset--;
+            screen.yOffset--;
+        }
 
         for (int i = 0; i < pixels.length; i++) {
             pixels[i] = i + tickCount;

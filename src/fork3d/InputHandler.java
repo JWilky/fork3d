@@ -21,7 +21,12 @@ public class InputHandler implements KeyListener {
     public List<Key> keys = new ArrayList<Key>();
 
     public class Key {
+        private int numTimesPressed = 0;
         public boolean pressed = false;
+
+        public int numTimesPressed(){
+            return numTimesPressed;
+        }
 
         public boolean isPressed(){
             return pressed;
@@ -29,6 +34,7 @@ public class InputHandler implements KeyListener {
 
         public void toggle(boolean isPressed) {
             pressed = isPressed;
+            if (isPressed) numTimesPressed++;
         }
 
     }
@@ -37,6 +43,8 @@ public class InputHandler implements KeyListener {
     public Key down = new Key();
     public Key left = new Key();
     public Key right = new Key();
+    public Key up_right = new Key();
+    public Key up_left = new Key();
 
     public void keyPressed(KeyEvent e) {
         toggleKey(e.getKeyCode(), true);
@@ -62,6 +70,12 @@ public class InputHandler implements KeyListener {
         }
         if (keyCode == KeyEvent.VK_F) {
             right.toggle(isPressed);
+        }
+        if (keyCode == KeyEvent.VK_R) {
+            up_right.toggle(isPressed);
+        }
+        if (keyCode == KeyEvent.VK_W) {
+            up_left.toggle(isPressed);
         }
     }
 }
